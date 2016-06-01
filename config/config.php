@@ -33,7 +33,7 @@ function is_HTTPS(){
 }
 
 define('WEB_ROOT',$web_root);
-define('HOST', (is_HTTPS() ? 'https://' :'http://').$_SERVER['HTTP_HOST'].'/');
+define('HOST', (is_HTTPS() ? 'https://' :'http://').$_SERVER['HTTP_HOST'].'/'); //$_SERVER["HTTP_HOST" 返回域名或IP地址
 define('BASIC_PATH',    P(dirname(dirname(__FILE__))).'/');
 define('APPHOST',       HOST.str_replace(WEB_ROOT,'',BASIC_PATH));//程序根目录
 define('TEMPLATE',		BASIC_PATH .'template/');	//模版文件路径
