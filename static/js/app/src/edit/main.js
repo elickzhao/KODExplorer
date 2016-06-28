@@ -1,5 +1,5 @@
 var animate_time = 160;
-define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jquery-contextMenu", "lib/artDialog/jquery-artDialog", "./function_list", "./taskTap", "./toolbar", "./edit", "./mode", "../../common/core", "../../tpl/copyright.html", "../../tpl/search.html", "../../tpl/search_list.html", "../../tpl/upload.html"],
+define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquery-contextMenu", "lib/artDialog/jquery-artDialog", "./function_list", "./taskTap", "./toolbar", "./edit", "./mode", "../../common/core", "../../tpl/copyright.html", "../../tpl/search.html", "../../tpl/search_list.html", "../../tpl/upload.html"],
     function(e) {
         e("lib/jquery-lib"),
             e("lib/util"),
@@ -1051,8 +1051,9 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                 }
             }
         }),
-    define("app/src/edit/edit", ["./mode"],
+    define("app/src/edit/edit", ["./mode","lib/editormd/mdeditor"],
         function(e) {
+            //默认配置
             var t = {
                     theme: G.code_config.theme,
                     fontsize: G.code_config.font_size,
@@ -1063,6 +1064,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                 },
                 a = {},     //现有编辑页面数组
                 i = void 0,
+                editormd = e("lib/editormd/mdeditor"),
                 n = e("./mode");
             ace_tools = ace.require("ace/ext/language_tools");
             //保存已打开的文件到数组里
@@ -1091,7 +1093,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                         l(t),
                         c(t),
                         $(".edit_body .this").removeClass("this"),
-                        $(".edit_body pre#" + i).addClass("this"),
+                        $(".edit_body pre#" + i).addClass("this"),  //增加编辑器主体部分样式,比如显示行号,滚动条等等  每增加一个文件会在<per>下面增加一条
                         void 0;
                     var s = "./index.php?editor/fileGet&filename=" + e;
                     G.share_page !== void 0 && (s = "./index.php?share/fileGet&user=" + G.user + "&sid=" + G.sid + "&filename=" + e),
@@ -1104,6 +1106,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                             the_url: s
                         },
                         l(t, !0);
+                    //提示框
                     var o = art.dialog({
                         title: !1,
                         content: LNG.getting,
@@ -1122,15 +1125,24 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                                 _(t.uuid),
                                 void 0;
                             var n = e.data;
+                            //console.log("emd");
                             a[i] = void 0,
-                                $("pre#" + i).text(n.content),
-                                c(t),
+                                //$("pre#" + i).text(n.content),
+                                //c(t),
                                 $(".edit_body .this").removeClass("this"),
                                 $(".edit_body pre#" + i).addClass("this");
-                            var s = a[i];
-                            s.kod.charset = n.charset,
-                                s.navigateTo(0),
-                                s.moveCursorTo(0, 0)
+                                $('<style>').html('.edit_body .tabs pre{display:block;}').appendTo($('.edit_body .tabs pre'));
+                                console.log($("pre").css('display','block'));
+                                //$(".edit_body .tabs pre").show();
+                            editormd.doSomething(i);
+                            //MD 这里样式冲突 本想通过js改写 可怎么都找不到那个值 只能改css文件了
+                            //console.log( $(".edit_body .tabs pre").css('display'));
+                            var di = $(".editormd .CodeMirror pre").css('display','block');
+                            //console.log(di);
+                            //var s = a[i];
+                            //s.kod.charset = n.charset,
+                            //    s.navigateTo(0),
+                            //    s.moveCursorTo(0, 0)
                         }
                     })
                 },
@@ -1146,6 +1158,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                             animate_time = n
                     } else Tap.resetWidth("add")
                 },
+                //创建代码编辑器
                 c = function(e) {
                     var i = ace.edit(e.uuid);
                     i.setTheme("ace/theme/" + t.theme),
@@ -1404,7 +1417,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                         }) : _(e)
                     }
                 },
-                _ = function(e) {
+                _ = function(e) {   //这个好像是关闭功能
                     delete a[e];
                     var t = "",
                         i = $(".edit_tab .tab"),
@@ -1468,6 +1481,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                 add: function(e) {
                     var t = s("filename", e);
                     //打开的文件不在数组里,就打开一个文件,否则返回选中文件
+                    //console.log(r(e));
                     "" != t ? p(t, !0) : r(e)
                 }
             }

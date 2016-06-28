@@ -50,6 +50,7 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 					<div style="clear:both"></div>
 				</div>
 				<div class="tabs"></div>
+
 			</div>			
 		</div>
 		<!-- 预览 -->
@@ -83,6 +84,9 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 			</div>
 		</div>
 	</div>
+
+<link rel="stylesheet" href="<?php echo STATIC_PATH;?>js/lib/editormd/css/editormd.min.css" />
+<script src="<?php echo STATIC_PATH;?>js/lib/editormd/lib/raphael.min.js"></script>
 
 <script src="./index.php?user/common_js#id=<?php echo rand_string(8);?>"></script>
 <script src="<?php echo STATIC_PATH;?>js/lib/seajs/sea.js?ver=<?php echo KOD_VERSION;?>"></script>
