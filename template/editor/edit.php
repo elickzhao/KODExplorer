@@ -85,7 +85,9 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		</div>
 	</div>
 
+<!--editormd 需要的-->
 <link rel="stylesheet" href="<?php echo STATIC_PATH;?>js/lib/editormd/css/editormd.min.css" />
+<link rel="stylesheet" href="<?php echo STATIC_PATH;?>js/lib/editormd/lib/codemirror/codemirror.min.css" />
 <script src="<?php echo STATIC_PATH;?>js/lib/editormd/lib/raphael.min.js"></script>
 
 <script src="./index.php?user/common_js#id=<?php echo rand_string(8);?>"></script>

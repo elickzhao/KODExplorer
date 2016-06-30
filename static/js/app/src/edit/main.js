@@ -1105,7 +1105,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             mode: n.get(core.pathExt(urlDecode(e))),
                             the_url: s
                         },
-                        l(t, !0);
+                        l(t, !0);	//增加标签和内容页
                     //提示框
                     var o = art.dialog({
                         title: !1,
@@ -1125,32 +1125,27 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 _(t.uuid),
                                 void 0;
                             var n = e.data;
-                            //console.log("emd");
-                            a[i] = void 0,
-                                //$("pre#" + i).text(n.content),
-                                //c(t),
-                                $(".edit_body .this").removeClass("this"),
-                                $(".edit_body pre#" + i).addClass("this");
-                                $('<style>').html('.edit_body .tabs pre{display:block;}').appendTo($('.edit_body .tabs pre'));
-                                console.log($("pre").css('display','block'));
-                                //$(".edit_body .tabs pre").show();
+                              a[i] = void 0,
+                                  //$("pre#" + i).text(n.content),
+                                  //c(t),
+                                  //确实不明白下面这两句什么意思
+                                  $(".edit_body .this").removeClass("this"),
+                                  $(".edit_body pre#" + i).addClass("this");
+                            $('<style>').html('.edit_body .tabs pre{display:block !important;}').appendTo($('.edit_body .tabs'));
                             editormd.doSomething(i);
-                            //MD 这里样式冲突 本想通过js改写 可怎么都找不到那个值 只能改css文件了
-                            //console.log( $(".edit_body .tabs pre").css('display'));
-                            var di = $(".editormd .CodeMirror pre").css('display','block');
-                            //console.log(di);
-                            //var s = a[i];
-                            //s.kod.charset = n.charset,
-                            //    s.navigateTo(0),
-                            //    s.moveCursorTo(0, 0)
+                              var s = a[i];
+                              s.kod.charset = n.charset,
+                                  s.navigateTo(0),
+                                  s.moveCursorTo(0, 0)
                         }
                     })
                 },
-                //增加tabs标签页
+                //增加tabs标签页  //不仅是增加标签页 edit_body下是增加内容
                 l = function(e, t) {
                     var a = '<div class="edit_tab_menu tab tab_' + e.uuid + '" uuid="' + e.uuid + '" title="' + urlDecode(urlDecode(e.filename)) + '">' + '   <div class="name">' + e.name + "</div>" + '   <a href="javascript:void(0);" class="close icon-remove-sign"></a>' + '   <div style="clear:both;"></div>' + "</div>";
                     $(a).insertBefore(".edit_tab .add");
-                    var i = '<pre id="' + e.uuid + '" class="edit_content"></pre>';
+                    var i = '<pre id="' + e.uuid + '" class="edit_content" style="overflow:hidden;"></pre>';
+                    //var i = '<div id="' + e.uuid + '" class="edit_content"></div>';
                     if ($(".edit_body .tabs").append(i), d(e.uuid), t) {
                         var n = animate_time;
                         animate_time = 1,
@@ -1269,14 +1264,14 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                 },
                 u = function(e, i, n) {
                     var s = a;
-                    void 0 != n && (s = {},
-                        s[n] = a[n]);
+                    void 0 != n && (s = {},s[n] = a[n]);
                     var o = void 0;
                     for (var r in s) {
                         var l = s[r];
                         switch (e) {
                             case "resize":
-                                l.resize();
+                            	//alert('dd');
+                                //l.resize();
                                 break;
                             case "theme":
                                 t[e] = i,
@@ -1417,7 +1412,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         }) : _(e)
                     }
                 },
-                _ = function(e) {   //这个好像是关闭功能
+                _ = function(e) {   //这个好像是关闭功能	//又好像是创建
                     delete a[e];
                     var t = "",
                         i = $(".edit_tab .tab"),

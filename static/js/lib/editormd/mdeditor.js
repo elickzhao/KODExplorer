@@ -17,8 +17,6 @@ define(
 	var libpath = uri.substr(0,(uri.length-20))+"lib/";
 	//exports.foo = 'bar';
 	exports.doSomething = function(id) {
-		console.log('editormd');
-		console.log(libpath);
 		testEditor = editormd(id, {
 		            width: "100%",
 		            height: "100%",
@@ -31,11 +29,9 @@ define(
 		            //previewCodeHighlight : false,  // 关闭预览窗口的代码高亮，默认开启
 		            flowChart : true,              // 疑似Sea.js与Raphael.js有冲突，必须先加载Raphael.js，Editor.md才能在Sea.js下正常进行；
 		            sequenceDiagram : true,        // 同上
-					onload : function() {
-						//$(".editormd .CodeMirror pre").css('display','block');
-						//这里太操蛋了 只有第一次读取的时候改 再次又变回去了
-						//console.log($(".editormd .CodeMirror pre").css('display','block'));
-					}
+					imageUpload : false,
+					imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+					imageUploadURL : libpath+"php/upload.php",
 		});
 	 };
 

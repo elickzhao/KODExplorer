@@ -48,8 +48,6 @@
 	</div><!-- / frame-main end-->
 <?php include(TEMPLATE.'common/footer.html');?>
 
-<link rel="stylesheet" href="<?php echo STATIC_PATH;?>js/lib/editormd/css/editormd.min.css" />
-<script src="<?php echo STATIC_PATH;?>js/lib/editormd/lib/raphael.min.js"></script>
 
 <script src="<?php echo STATIC_PATH;?>js/lib/seajs/sea.js?ver=<?php echo KOD_VERSION;?>"></script>
 <script src="./index.php?user/common_js#id=<?php echo rand_string(8);?>"></script>
