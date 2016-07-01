@@ -1065,10 +1065,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                 a = {},     //现有编辑页面数组
                 i = void 0,
                 editormd = e("lib/editormd/mdeditor"),
+                ext = void 0,
                 n = e("./mode");
             ace_tools = ace.require("ace/ext/language_tools");
             //保存已打开的文件到数组里
             var s = function(e, t) { //e : filename  t : 文件真实名称
+            		console.log('sssss');
                     if (void 0 == t || void 0 == e || 1 > a.length) return "";
                     //如果增加的文件已经打开就返回uuid
                     for (var i in a) if (a[i].kod[e] == t) return a[i].kod.uuid;  // for(var i in a) 这是js的循环遍历写法
@@ -1125,18 +1127,38 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 _(t.uuid),
                                 void 0;
                             var n = e.data;
+                            //console.log(n);
+                            if(n.ext != 'md'){
                               a[i] = void 0,
-                                  //$("pre#" + i).text(n.content),
-                                  //c(t),
+                                  $("pre#" + i).text(n.content),	//把内容添加到这个层里
+                                  c(t),	//创建个编辑器,并根据上面那个层的内容做成编辑器
                                   //确实不明白下面这两句什么意思
                                   $(".edit_body .this").removeClass("this"),
-                                  $(".edit_body pre#" + i).addClass("this");
-                            $('<style>').html('.edit_body .tabs pre{display:block !important;}').appendTo($('.edit_body .tabs'));
-                            editormd.doSomething(i);
-                              var s = a[i];
-                              s.kod.charset = n.charset,
-                                  s.navigateTo(0),
-                                  s.moveCursorTo(0, 0)
+                                  $(".edit_body pre#" + i).addClass("this");	//给这个层级加上this类 难道是根据这个判断当期激活页面
+                                                              var s = a[i];
+                            s.kod.charset = n.charset,
+	                            s.navigateTo(0),
+	                            s.moveCursorTo(0, 0);	//还是这个是切换页面时,显示当前选择的页面??
+                            }else{
+                            	a[i] = void 0,
+                                  //确实不明白下面这两句什么意思
+                                  $(".edit_body .this").removeClass("this"),
+                                  $(".edit_body pre#" + i).addClass("this");	//给这个层级加上this类 难道是根据这个判断当期激活页面
+                            	ext = n.ext;
+                            	//$('<style>').html('.edit_body .tabs pre{display:block !important;}').appendTo($('.edit_body .tabs'));
+                            	editormd.doSomething(i,n.content);
+		                        testEditor.kod = {
+		                            mode: t.mode,
+		                            uuid: t.uuid,
+		                            name: t.name,
+		                            charset: "ansii",
+		                            the_url: t.the_url,
+		                            filename: t.filename
+		                        }
+                            	a[i] = testEditor;
+                            }
+                           
+	                        console.log(a);    
                         }
                     })
                 },
@@ -1229,8 +1251,8 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             filename: e.filename
                         },
                         i.hasChanged = !1,
-                        a[e.uuid] = i,
-                        d(e.uuid, !1)
+                        a[e.uuid] = i,	//把对象加到数组里
+                        d(e.uuid, !1)	//这是什么 激活当前页?
                 },
                 d = function(e, t) {
                     if ($(".edit_tab .this").removeClass("this"), $(".edit_tab .tab_" + e).addClass("this"), i = e, void 0 != a[e] && a[e].focus(), t && $(".edit_tab .this").stop(!0, !0).animate({
@@ -1270,8 +1292,9 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         var l = s[r];
                         switch (e) {
                             case "resize":
-                            	//alert('dd');
-                                //l.resize();
+                            	if(ext != "md"){
+                            		l.resize();
+                            	}
                                 break;
                             case "theme":
                                 t[e] = i,
@@ -1412,7 +1435,8 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         }) : _(e)
                     }
                 },
-                _ = function(e) {   //这个好像是关闭功能	//又好像是创建
+                _ = function(e) {   //这个好像是关闭功能	//就是关闭标签功能
+                	console.log(a);
                     delete a[e];
                     var t = "",
                         i = $(".edit_tab .tab"),

@@ -16,12 +16,12 @@ define(
 	var uri = (module.uri);
 	var libpath = uri.substr(0,(uri.length-20))+"lib/";
 	//exports.foo = 'bar';
-	exports.doSomething = function(id) {
+	exports.doSomething = function(id,md) {
 		testEditor = editormd(id, {
 		            width: "100%",
 		            height: "100%",
 		            path : libpath,
-		            markdown : 'ddddd',
+		            markdown : md,
 		            //toolbar  : false,             //关闭工具栏
 					toolbarIcons : "my",
                     //htmlDecode : true,            // 开启HTML标签解析，为了安全性，默认不开启

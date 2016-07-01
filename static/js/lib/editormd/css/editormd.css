@@ -689,7 +689,7 @@
 .editormd .CodeMirror pre {
   font-size: 14px;
   padding: 0 12px;
-  /*display: block;*/
+  display: block;	/* 后添加的为了配合kod多标签使用 */
 }
 .editormd .CodeMirror-linenumbers {
   padding: 0 5px;
