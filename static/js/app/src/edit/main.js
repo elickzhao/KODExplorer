@@ -1,33 +1,33 @@
 var animate_time = 160;
-define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquery-contextMenu", "lib/artDialog/jquery-artDialog", "./function_list", "./taskTap", "./toolbar", "./edit", "./mode", "../../common/core", "../../tpl/copyright.html", "../../tpl/search.html", "../../tpl/search_list.html", "../../tpl/upload.html"],
-    function(e) {
-        e("lib/jquery-lib"),
-            e("lib/util"),
-            e("lib/contextMenu/jquery-contextMenu"),
-            e("lib/artDialog/jquery-artDialog"),
-            FunctionList = e("./function_list"),
-            Tap = e("./taskTap"),
-            Toolbar = e("./toolbar"),
-            Editor = e("./edit"),
-            core = e("../../common/core"),
-            rightMenu = Tap.rightMenu,
-            preview = Toolbar.preview,
-            auto_function_list = !1,
-            Global = {
-                topbar_height: 40,
-                isIE: !-[1]
-            },
-            $(document).ready(function() {
-                Editor.init(),
-                    Toolbar.init(),
-                    FunctionList.init(),
-                    Tap.init(),
-                "" != G.frist_file && Editor.add(G.frist_file),
-                    window.onbeforeunload = function() {
-                        return Editor.hasFileSave() ? LNG.if_save_file: void 0
-                    }
-            })
-    }),
+define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jquery-contextMenu", "lib/artDialog/jquery-artDialog", "./function_list", "./taskTap", "./toolbar", "./edit", "./mode", "../../common/core", "../../tpl/copyright.html", "../../tpl/search.html", "../../tpl/search_list.html", "../../tpl/upload.html"],
+        function(e) {
+            e("lib/jquery-lib"),
+                e("lib/util"),
+                e("lib/contextMenu/jquery-contextMenu"),
+                e("lib/artDialog/jquery-artDialog"),
+                FunctionList = e("./function_list"),
+                Tap = e("./taskTap"),
+                Toolbar = e("./toolbar"),
+                Editor = e("./edit"),
+                core = e("../../common/core"),
+                rightMenu = Tap.rightMenu,
+                preview = Toolbar.preview,
+                auto_function_list = !1,
+                Global = {
+                    topbar_height: 40,
+                    isIE: !-[1]
+                },
+                $(document).ready(function() {
+                    Editor.init(),
+                        Toolbar.init(),
+                        FunctionList.init(),
+                        Tap.init(),
+                        "" != G.frist_file && Editor.add(G.frist_file),
+                        window.onbeforeunload = function() {
+                            return Editor.hasFileSave() ? LNG.if_save_file : void 0
+                        }
+                })
+        }),
     define("app/src/edit/function_list", [],
         function() {
             var e = {
@@ -36,124 +36,111 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         reg_name: /.*function\s+(.*\))/,
                         reg_index: 1,
                         type: "function"
-                    },
-                        {
-                            reg: /\s*class\s+(\w*)\s*.*\{/g,
-                            reg_name: /\s*class\s+(\w*)\s*.*\{/,
-                            reg_index: 1,
-                            type: "class"
-                        }],
+                    }, {
+                        reg: /\s*class\s+(\w*)\s*.*\{/g,
+                        reg_name: /\s*class\s+(\w*)\s*.*\{/,
+                        reg_index: 1,
+                        type: "class"
+                    }],
                     javascript: [{
                         reg: /\s*([\w\.]+)\s*=\s*function\s*\(.*\)\s*\{/g,
                         reg_name: /\s*([\w\.]+)\s*=\s*function\s*(\(.*\))/,
                         reg_index: 1,
                         reg_name_all: [1, 2],
                         type: "function function_var"
-                    },
-                        {
-                            reg: /\s*function\s+([\w\s]+)\s*\(.*\)\s*\{/g,
-                            reg_name: /\s*function\s+([\w\s]+)\s*(\(.*\))/,
-                            reg_index: 1,
-                            reg_name_all: [1, 2],
-                            type: "function function_define"
-                        },
-                        {
-                            reg: /\s*([\w\.]+)\s*:\s*function\s*\(.*\)\s*\{/g,
-                            reg_name: /\s*([\w\.]+)\s*:\s*function\s*(\(.*\))/,
-                            reg_index: 1,
-                            reg_name_all: [1, 2],
-                            type: "function function_value"
-                        }],
+                    }, {
+                        reg: /\s*function\s+([\w\s]+)\s*\(.*\)\s*\{/g,
+                        reg_name: /\s*function\s+([\w\s]+)\s*(\(.*\))/,
+                        reg_index: 1,
+                        reg_name_all: [1, 2],
+                        type: "function function_define"
+                    }, {
+                        reg: /\s*([\w\.]+)\s*:\s*function\s*\(.*\)\s*\{/g,
+                        reg_name: /\s*([\w\.]+)\s*:\s*function\s*(\(.*\))/,
+                        reg_index: 1,
+                        reg_name_all: [1, 2],
+                        type: "function function_value"
+                    }],
                     python: [{
                         reg: /\s*class\s+(\w+)\s*\(/g,
                         reg_name: /\s*class\s+(\w+)\s*\(/,
                         reg_index: 1,
                         type: "class"
-                    },
-                        {
-                            reg: /\s*def\s+(\w+)\s*\(.*\)/g,
-                            reg_name: /\s*def\s+(\w+)\s*\(.*\)/,
-                            reg_index: 1,
-                            type: "function"
-                        }],
+                    }, {
+                        reg: /\s*def\s+(\w+)\s*\(.*\)/g,
+                        reg_name: /\s*def\s+(\w+)\s*\(.*\)/,
+                        reg_index: 1,
+                        type: "function"
+                    }],
                     ruby: [{
                         reg: /\s*class\s+(\w+)\s*/g,
                         reg_name: /\s*class\s+(\w+)\s*/,
                         reg_index: 1,
                         type: "class"
-                    },
-                        {
-                            reg: /\s*def\s+(\w+)\s*/g,
-                            reg_name: /\s*def\s+(\w+)\s*/,
-                            reg_index: 1,
-                            type: "function"
-                        }],
+                    }, {
+                        reg: /\s*def\s+(\w+)\s*/g,
+                        reg_name: /\s*def\s+(\w+)\s*/,
+                        reg_index: 1,
+                        type: "function"
+                    }],
                     java: [{
                         reg: /\s*(final)?\s*(public|private|protected)\s*.*\s+(\w+)\s*\(.*\).*\{/g,
                         reg_name: /\s*(final)?\s*(public|private|protected)\s*.*\s+(\w+)\s*\(.*\).*\{/,
                         reg_index: 3,
                         type: "function"
-                    },
-                        {
-                            reg: /\s*class\s+(\w+)\s*/g,
-                            reg_name: /\s*class\s+(\w+)\s*/,
-                            reg_index: 1,
-                            type: "class"
-                        }],
+                    }, {
+                        reg: /\s*class\s+(\w+)\s*/g,
+                        reg_name: /\s*class\s+(\w+)\s*/,
+                        reg_index: 1,
+                        type: "class"
+                    }],
                     objectivec: [{
                         reg: /[\+-]\s*\(.*\)\s*(\w+)\s*\:\s*\(.*/g,
                         reg_name: /[\+-]\s*\(.*\)\s*(\w+)\s*\:\s*\(.*/,
                         reg_index: 1,
                         type: "function"
-                    },
-                        {
-                            reg: /[\+-]\s*\([^:\{\}]*\)\s*(\w*)\s*\{/g,
-                            reg_name: /[\+-]\s*\([^:\{\}]*\)\s*(\w*)\s*\{/,
-                            reg_index: 1,
-                            type: "function"
-                        },
-                        {
-                            reg: /@implementation\s+(\w*)/g,
-                            reg_name: /@implementation\s+(\w*)/,
-                            reg_index: 1,
-                            type: "class"
-                        },
-                        {
-                            reg: /#pragma\s+(mark\s+)?(.*)/g,
-                            reg_name: /#pragma\s+(mark\s+)?(.*)/,
-                            reg_index: 2,
-                            type: "mark"
-                        },
-                        {
-                            reg: /([\w*]+\s+)+\*?(\w+)\s*\([\w,\s\*\[\]\<\>&]*\)\s*\{/g,
-                            reg_name: /(\w+\s*)+\s\*?(\w+)\s*\(/,
-                            reg_index: 2,
-                            type: "function function_value"
-                        },
-                        {
-                            reg: /\s*(\w+)::~?(\w+)\s*\([\w,\s\*\[\]\<\>&]*\)\s*\{/g,
-                            reg_name: /\s*(\w+)::~?(\w+)\s*\(/,
-                            reg_index: 2,
-                            type: "function function_define"
-                        }],
+                    }, {
+                        reg: /[\+-]\s*\([^:\{\}]*\)\s*(\w*)\s*\{/g,
+                        reg_name: /[\+-]\s*\([^:\{\}]*\)\s*(\w*)\s*\{/,
+                        reg_index: 1,
+                        type: "function"
+                    }, {
+                        reg: /@implementation\s+(\w*)/g,
+                        reg_name: /@implementation\s+(\w*)/,
+                        reg_index: 1,
+                        type: "class"
+                    }, {
+                        reg: /#pragma\s+(mark\s+)?(.*)/g,
+                        reg_name: /#pragma\s+(mark\s+)?(.*)/,
+                        reg_index: 2,
+                        type: "mark"
+                    }, {
+                        reg: /([\w*]+\s+)+\*?(\w+)\s*\([\w,\s\*\[\]\<\>&]*\)\s*\{/g,
+                        reg_name: /(\w+\s*)+\s\*?(\w+)\s*\(/,
+                        reg_index: 2,
+                        type: "function function_value"
+                    }, {
+                        reg: /\s*(\w+)::~?(\w+)\s*\([\w,\s\*\[\]\<\>&]*\)\s*\{/g,
+                        reg_name: /\s*(\w+)::~?(\w+)\s*\(/,
+                        reg_index: 2,
+                        type: "function function_define"
+                    }],
                     c_cpp: [{
                         reg: /([\w*]+\s+)+\*?(\w+)\s*\([\w,\s\*\[\]\<\>&]*\)\s*\{/g,
                         reg_name: /(\w+\s*)+\s\*?(\w+)\s*\(/,
                         reg_index: 2,
                         type: "function"
-                    },
-                        {
-                            reg: /\s*(\w+)::~?(\w+)\s*\([\w,\s\*\[\]\<\>&]*\)\s*\{/g,
-                            reg_name: /\s*(\w+)::~?(\w+)\s*\(/,
-                            reg_index: 2,
-                            type: "function function_define"
-                        },
-                        {
-                            reg: /\s*class\s+(\w+)\s*:/g,
-                            reg_name: /\s*class\s+(\w+)\s*:/,
-                            reg_index: 1,
-                            type: "class"
-                        }]
+                    }, {
+                        reg: /\s*(\w+)::~?(\w+)\s*\([\w,\s\*\[\]\<\>&]*\)\s*\{/g,
+                        reg_name: /\s*(\w+)::~?(\w+)\s*\(/,
+                        reg_index: 2,
+                        type: "function function_define"
+                    }, {
+                        reg: /\s*class\s+(\w+)\s*:/g,
+                        reg_name: /\s*class\s+(\w+)\s*:/,
+                        reg_index: 1,
+                        type: "class"
+                    }]
                 },
                 t = function(e, t) {
                     var a = e.match(t.reg);
@@ -162,7 +149,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             var l = {};
                             l.the_match = a[r];
                             var c = l.the_match.match(t.reg_name);
-                            if (! (2 > c.length) && c[t.reg_index]) {
+                            if (!(2 > c.length) && c[t.reg_index]) {
                                 l.name = c[t.reg_index];
                                 var d = o.indexOf(l.the_match),
                                     p = l.the_match.indexOf(l.name);
@@ -187,19 +174,19 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         }
                         s.sort(function(e, t) {
                             var a = "pos_start";
-                            return e[a] < t[a] ? -1: e[a] >= t[a] ? 1: void 0
+                            return e[a] < t[a] ? -1 : e[a] >= t[a] ? 1 : void 0
                         });
                         for (var l = a.split("\n"), c = l.length, d = 0, p = s[d], u = 0, h = 0; c > h && p; h++) {
                             for (; p && p.pos_start >= u && p.pos_start <= u + l[h].length;) s[d].range = {
-                                start: {
-                                    row: h,
-                                    column: p.pos_start - u
+                                    start: {
+                                        row: h,
+                                        column: p.pos_start - u
+                                    },
+                                    end: {
+                                        row: h,
+                                        column: p.pos_end - u
+                                    }
                                 },
-                                end: {
-                                    row: h,
-                                    column: p.pos_end - u
-                                }
-                            },
                                 d++,
                                 p = s[d];
                             u = u + l[h].length + 1
@@ -233,7 +220,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             d = c.range;
                         if (d) {
                             o.length - 1 > l && r >= o[l].range.start.row && o[l + 1].range && o[l + 1].range.start.row > r && (c.type += " row_select"),
-                            l == o.length - 1 && r >= o[l].range.start.row && (c.type += " row_select");
+                                l == o.length - 1 && r >= o[l].range.start.row && (c.type += " row_select");
                             var p = d.start.row + "," + d.start.column + "," + d.end.row + "," + d.end.column,
                                 u = n(n(c.the_match)).substr(0, 150);
                             e += '<div class="list_row ' + i(c.type) + ' " title="' + i(u) + '" data-range="' + p + '">' + '<span class="icon"></span>' + '<span class="cell">' + i(c.name) + "</span></div>"
@@ -275,23 +262,23 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                 }
             }
         }),
-    define("app/src/edit/taskTap", [],  //标签操作
+    define("app/src/edit/taskTap", [], //标签操作
         function() {
             var e = function() {
                     $(".edit_tab .tab").live("mouseenter",
-                        function() {
-                            $(this).hasClass("this") || $(this).addClass("hover"),
-                                $(this).unbind("mousedown").mousedown(function(e) {
-                                    $(this).hasClass("this") || $.nodeName(e.target, "A") || ($(this).removeClass("hover").addClass("this"), Editor.select($(this).attr("uuid")))
-                                })
-                        }).die("mouseleave").live("mouseleave",
-                        function() {
-                            $(this).removeClass("hover")
-                        }).die("dblclick").live("dblclick",
-                        function(e) {
-                            Editor.remove($(this).attr("uuid")),
-                                stopPP(e)
-                        }),
+                            function() {
+                                $(this).hasClass("this") || $(this).addClass("hover"),
+                                    $(this).unbind("mousedown").mousedown(function(e) {
+                                        $(this).hasClass("this") || $.nodeName(e.target, "A") || ($(this).removeClass("hover").addClass("this"), Editor.select($(this).attr("uuid")))
+                                    })
+                            }).die("mouseleave").live("mouseleave",
+                            function() {
+                                $(this).removeClass("hover")
+                            }).die("dblclick").live("dblclick",
+                            function(e) {
+                                Editor.remove($(this).attr("uuid")),
+                                    stopPP(e)
+                            }),
                         $(".edit_tab").die("dblclick").live("dblclick",
                             function(e) {
                                 Editor.add(),
@@ -399,7 +386,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             }), $(document).one("mouseup",
                                 function(e) {
                                     m(e),
-                                    this.releaseCapture && this.releaseCapture()
+                                        this.releaseCapture && this.releaseCapture()
                                 }))
                         });
                     var u = function(i) {
@@ -474,14 +461,14 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 s = !1,
                                 startTime = 0,
                                 $(".dragMaskView").remove(),
-                            void 0 != a && (r = e.get(0).getBoundingClientRect().left, a.animate({
-                                    left: r + "px"
-                                },
-                                animate_time,
-                                function() {
-                                    e.css("opacity", 1),
-                                        $(this).remove()
-                                }))
+                                void 0 != a && (r = e.get(0).getBoundingClientRect().left, a.animate({
+                                        left: r + "px"
+                                    },
+                                    animate_time,
+                                    function() {
+                                        e.css("opacity", 1),
+                                            $(this).remove()
+                                    }))
                         }
                 },
                 n = function(e, t, a) {
@@ -497,13 +484,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     switch (d > p && (s = Math.floor((r - c) / d) - l), e) {
                         case "add":
                             $(".edit_tab .tabs .this").css({
-                                "margin-top":
-                                    "30px",
-                                width: s
-                            }).animate({
-                                    "margin-top": "0px"
-                                },
-                                i),
+                                    "margin-top": "30px",
+                                    width: s
+                                }).animate({
+                                        "margin-top": "0px"
+                                    },
+                                    i),
                                 o.animate({
                                         width: s + "px"
                                     },
@@ -532,17 +518,15 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     }
                 };
             return {
-                rightMenu:
-                {
-                    hidden:
-                    t
+                rightMenu: {
+                    hidden: t
                 },
                 resetWidth: n,
                 init: function() {
                     $("body").live("resize",
-                        function() {
-                            n("resize")
-                        }),
+                            function() {
+                                n("resize")
+                            }),
                         e(),
                         i(),
                         a()
@@ -553,9 +537,9 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
         function() {
             var e = function() {
                     $(window).bind("resize",
-                        function() {
-                            n.resize()
-                        }),
+                            function() {
+                                n.resize()
+                            }),
                         $(".toolMenu").bind("click mouseup", stopPP),
                         $(".toolMenu").on("mousedown",
                             function() {
@@ -569,7 +553,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             }),
                         $(".toolMenu").on("hover",
                             function() {
-                                if (!$(".toolMenu").hasClass("context-menu-active")) return ! 0;
+                                if (!$(".toolMenu").hasClass("context-menu-active")) return !0;
                                 $(".toolMenu").removeClass("select"),
                                     $(this).addClass("select");
                                 var e = $(this).offset().left - 4;
@@ -651,9 +635,9 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             }
                         });
                     for (var e = [12, 13, 14, 15, 16, 18, 20, 24, 28, 32], a = G.code_theme_all.split(","), i = Editor.mode.modeAll(), s = {},
-                             o = {},
-                             r = {},
-                             l = 0; e.length > l; l++) {
+                            o = {},
+                            r = {},
+                            l = 0; e.length > l; l++) {
                         var c = e[l];
                         s["set_code_font-" + c] = {
                             name: c + "px",
@@ -675,53 +659,53 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         }
                     }
                     $.contextMenu({
-                        selector: ".editMenuView",
-                        trigger: "none",
-                        callback: t,
-                        items: {
-                            code_font: {
-                                className: "code_font_list",
-                                name: LNG.font_size,
-                                icon: "font",
-                                items: s
-                            },
-                            code_theme: {
-                                className: "code_theme_list",
-                                name: LNG.code_theme,
-                                icon: "magic",
-                                items: o
-                            },
-                            code_mode: {
-                                className: "code_mode_list",
-                                name: LNG.code_mode,
-                                icon: "leaf",
-                                items: r
-                            },
-                            sep1: "---------",
-                            function_list: {
-                                name: LNG.function_list + "<b>Ctrl+R</b>",
-                                className: "function_list"
-                            },
-                            auto_complete: {
-                                name: LNG.auto_complete,
-                                className: "auto_complete"
-                            },
-                            sep2: "---------",
-                            wordbreak: {
-                                name: LNG.wordwrap,
-                                className: "wordbreak"
-                            },
-                            display_char: {
-                                name: LNG.char_all_display,
-                                className: "display_char"
-                            },
-                            sep3: "---------",
-                            fullscreen: {
-                                name: LNG.full_screen,
-                                icon: "fullscreen"
+                            selector: ".editMenuView",
+                            trigger: "none",
+                            callback: t,
+                            items: {
+                                code_font: {
+                                    className: "code_font_list",
+                                    name: LNG.font_size,
+                                    icon: "font",
+                                    items: s
+                                },
+                                code_theme: {
+                                    className: "code_theme_list",
+                                    name: LNG.code_theme,
+                                    icon: "magic",
+                                    items: o
+                                },
+                                code_mode: {
+                                    className: "code_mode_list",
+                                    name: LNG.code_mode,
+                                    icon: "leaf",
+                                    items: r
+                                },
+                                sep1: "---------",
+                                function_list: {
+                                    name: LNG.function_list + "<b>Ctrl+R</b>",
+                                    className: "function_list"
+                                },
+                                auto_complete: {
+                                    name: LNG.auto_complete,
+                                    className: "auto_complete"
+                                },
+                                sep2: "---------",
+                                wordbreak: {
+                                    name: LNG.wordwrap,
+                                    className: "wordbreak"
+                                },
+                                display_char: {
+                                    name: LNG.char_all_display,
+                                    className: "display_char"
+                                },
+                                sep3: "---------",
+                                fullscreen: {
+                                    name: LNG.full_screen,
+                                    icon: "fullscreen"
+                                }
                             }
-                        }
-                    }),
+                        }),
                         $.contextMenu({
                             selector: ".editMenuTools",
                             trigger: "none",
@@ -762,14 +746,14 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             function() {
                                 var e = $(this).attr("action");
                                 t(e),
-                                Editor.current() && Editor.current().focus()
+                                    Editor.current() && Editor.current().focus()
                             }),
                         $("body").click(function() {
                             Editor.current() && Editor.current().focus(),
                                 $(".toolMenu").removeClass("select");
                             try {
                                 window.parent.rightMenu.hidden()
-                            } catch(e) {}
+                            } catch (e) {}
                         }),
                         $("ul.code_font_list .context-menu-item").mouseenter(function() {
                             Editor.current().setFontSize($(this).text()),
@@ -778,7 +762,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                     Editor.config("fontsize", e),
                                         $("ul.code_font_list .context-menu-item").removeClass("selected"),
                                         $(this).addClass("selected"),
-                                    Editor.current() && Editor.current().focus()
+                                        Editor.current() && Editor.current().focus()
                                 })
                         }).mouseleave(function() {
                             Editor.current().setFontSize(G.code_config.font_size)
@@ -790,7 +774,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                     Editor.config("theme", e),
                                         $("ul.code_theme_list .context-menu-item").removeClass("selected"),
                                         $(this).addClass("selected"),
-                                    Editor.current() && Editor.current().focus()
+                                        Editor.current() && Editor.current().focus()
                                 })
                         }).mouseleave(function() {
                             Editor.current().setTheme("ace/theme/" + G.code_config.theme)
@@ -802,7 +786,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                     Editor.current().kod.mode = e,
                                         $("ul.code_mode_list .context-menu-item").removeClass("selected"),
                                         $(this).addClass("selected"),
-                                    Editor.current() && Editor.current().focus()
+                                        Editor.current() && Editor.current().focus()
                                 })
                         }).mouseleave(function() {
                             Editor.current().getSession().setMode("ace/mode/" + Editor.current().kod.mode)
@@ -908,13 +892,13 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                 },
                 a = function(e) {
                     $(".context-menu-root .context-menu-item").removeClass("selected"),
-                    1 == e.display_char && $(".context-menu-root .display_char").addClass("selected"),
-                    1 == e.function_list && $(".context-menu-root .function_list").addClass("selected"),
-                    1 == e.auto_complete && $(".context-menu-root .auto_complete").addClass("selected"),
-                    1 == e.wrap && $(".context-menu-root .wordbreak").addClass("selected"),
+                        1 == e.display_char && $(".context-menu-root .display_char").addClass("selected"),
+                        1 == e.function_list && $(".context-menu-root .function_list").addClass("selected"),
+                        1 == e.auto_complete && $(".context-menu-root .auto_complete").addClass("selected"),
+                        1 == e.wrap && $(".context-menu-root .wordbreak").addClass("selected"),
                         $(".set_code_theme-" + e.theme).addClass("selected"),
                         $(".set_code_font-" + e.fontsize.substr(0, 2)).addClass("selected"),
-                    Editor.current() && Editor.current().kod && Editor.current().kod.mode && $(".set_code_mode-" + Editor.current().kod.mode).addClass("selected")
+                        Editor.current() && Editor.current().kod && Editor.current().kod.mode && $(".set_code_mode-" + Editor.current().kod.mode).addClass("selected")
                 },
                 i = function() {
                     $(".frame_right input").keyEnter(n.refresh);
@@ -926,12 +910,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         $box = $drag.parent(),
                         $drag.die("mousedown").live("mousedown",
                             function(e) {
-                                return 1 != e.which ? !0: (i(e), this.setCapture && this.setCapture(), $(document).mousemove(function(e) {
+                                return 1 != e.which ? !0 : (i(e), this.setCapture && this.setCapture(), $(document).mousemove(function(e) {
                                     s(e)
                                 }), $(document).one("mouseup",
                                     function(e) {
                                         o(e),
-                                        this.releaseCapture && this.releaseCapture()
+                                            this.releaseCapture && this.releaseCapture()
                                     }), void 0)
                             });
                     var i = function(i) {
@@ -943,12 +927,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 $box.append('<div class="preview_frame mask_view"></div>')
                         },
                         s = function(i) {
-                            if (!e) return ! 0;
+                            if (!e) return !0;
                             var n = i.pageX - t,
                                 s = a - n,
                                 o = $(window).width();
                             s >= o - 50 && (s = o - 50),
-                            100 >= s && (s = 100),
+                                100 >= s && (s = 100),
                                 $box_left.css("width", o - s).find(".edit_body").css("width", o - s),
                                 $box.width(s),
                                 $box.find(".function_list").css("width", s),
@@ -983,7 +967,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                         $(".frame_left").css("width", e).find(".edit_body").css("width", e),
                                             n.resize()
                                     }),
-                            "function_list" == t && FunctionList.refresh()
+                                "function_list" == t && FunctionList.refresh()
                         };
                     return {
                         open: i,
@@ -995,7 +979,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 var a = e.width(),
                                     i = $(window).width();
                                 a >= i - 50 && (a = i - 50),
-                                100 >= a && (a = 100),
+                                    100 >= a && (a = 100),
                                     e.width(a),
                                     t.css("width", i - a).find(".edit_body").css("width", i - a)
                             }
@@ -1004,16 +988,16 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         },
                         close: function() {
                             e.stop(!0, !0).animate({
-                                    width: 0
-                                },
-                                200,
-                                function() {
-                                    e.css("display", "none"),
-                                        e.find(".preview").css("display", "none"),
-                                        e.find(".function_list").css("display", "none"),
-                                        e.find("iframe").attr("src", ""),
-                                        a.val("")
-                                }),
+                                        width: 0
+                                    },
+                                    200,
+                                    function() {
+                                        e.css("display", "none"),
+                                            e.find(".preview").css("display", "none"),
+                                            e.find(".function_list").css("display", "none"),
+                                            e.find("iframe").attr("src", ""),
+                                            a.val("")
+                                    }),
                                 $(".frame_left").css("width", "100%").find(".edit_body").css("width", "100%"),
                                 Tap.resetWidth("resize"),
                                 Editor.config("resize")
@@ -1024,7 +1008,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 e.find("iframe").attr("src", t)
                         }
                     }
-                } ();
+                }();
             return {
                 preview: n,
                 doAction: t,
@@ -1051,7 +1035,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                 }
             }
         }),
-    define("app/src/edit/edit", ["./mode","lib/editormd/mdeditor"],
+    define("app/src/edit/edit", ["./mode", "lib/editormd/mdeditor"],
         function(e) {
             //默认配置
             var t = {
@@ -1062,22 +1046,22 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     display: parseInt(G.code_config.display_char),
                     function_list: parseInt(G.code_config.function_list)
                 },
-                a = {},     //现有编辑页面数组
+                a = {}, //现有编辑页面数组
                 i = void 0,
                 editormd = e("lib/editormd/mdeditor"),
                 ext = void 0,
                 n = e("./mode");
             ace_tools = ace.require("ace/ext/language_tools");
-            //保存已打开的文件到数组里
+            //每次操作都会检查数组,打开,关闭,切换
             var s = function(e, t) { //e : filename  t : 文件真实名称
-            		console.log('sssss');
                     if (void 0 == t || void 0 == e || 1 > a.length) return "";
                     //如果增加的文件已经打开就返回uuid
-                    for (var i in a) if (a[i].kod[e] == t) return a[i].kod.uuid;  // for(var i in a) 这是js的循环遍历写法
+                    for (var i in a)
+                        if (a[i].kod[e] == t) return a[i].kod.uuid; // for(var i in a) 这是js的循环遍历写法
                     return ""
                 },
                 o = function() {
-                    auto_function_list = 1 == t.function_list ? !0: !1,
+                    auto_function_list = 1 == t.function_list ? !0 : !1,
                         Toolbar.toolbarSelected(t)
                 },
                 //打开新的文件
@@ -1085,17 +1069,17 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     var t, i = "id_" + UUID();
                     //e == 0 打开新的文件
                     if (void 0 == e) return t = {
-                        uuid: i,
-                        name: "newfile.txt",
-                        charset: "utf-8",
-                        filename: "",
-                        mode: n.get("txt"),
-                        the_url: ""
-                    },
+                            uuid: i,
+                            name: "newfile.txt",
+                            charset: "utf-8",
+                            filename: "",
+                            mode: n.get("txt"),
+                            the_url: ""
+                        },
                         l(t),
                         c(t),
                         $(".edit_body .this").removeClass("this"),
-                        $(".edit_body pre#" + i).addClass("this"),  //增加编辑器主体部分样式,比如显示行号,滚动条等等  每增加一个文件会在<per>下面增加一条
+                        $(".edit_body pre#" + i).addClass("this"), //增加编辑器主体部分样式,比如显示行号,滚动条等等  每增加一个文件会在<per>下面增加一条
                         void 0;
                     var s = "./index.php?editor/fileGet&filename=" + e;
                     G.share_page !== void 0 && (s = "./index.php?share/fileGet&user=" + G.user + "&sid=" + G.sid + "&filename=" + e),
@@ -1107,7 +1091,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             mode: n.get(core.pathExt(urlDecode(e))),
                             the_url: s
                         },
-                        l(t, !0);	//增加标签和内容页
+                        l(t, !0); //增加标签和内容页
                     //提示框
                     var o = art.dialog({
                         title: !1,
@@ -1128,37 +1112,25 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 void 0;
                             var n = e.data;
                             //console.log(n);
-                            if(n.ext != 'md'){
-                              a[i] = void 0,
-                                  $("pre#" + i).text(n.content),	//把内容添加到这个层里
-                                  c(t),	//创建个编辑器,并根据上面那个层的内容做成编辑器
-                                  //确实不明白下面这两句什么意思
-                                  $(".edit_body .this").removeClass("this"),
-                                  $(".edit_body pre#" + i).addClass("this");	//给这个层级加上this类 难道是根据这个判断当期激活页面
-                                                              var s = a[i];
-                            s.kod.charset = n.charset,
-	                            s.navigateTo(0),
-	                            s.moveCursorTo(0, 0);	//还是这个是切换页面时,显示当前选择的页面??
-                            }else{
-                            	a[i] = void 0,
-                                  //确实不明白下面这两句什么意思
-                                  $(".edit_body .this").removeClass("this"),
-                                  $(".edit_body pre#" + i).addClass("this");	//给这个层级加上this类 难道是根据这个判断当期激活页面
-                            	ext = n.ext;
-                            	//$('<style>').html('.edit_body .tabs pre{display:block !important;}').appendTo($('.edit_body .tabs'));
-                            	editormd.doSomething(i,n.content);
-		                        testEditor.kod = {
-		                            mode: t.mode,
-		                            uuid: t.uuid,
-		                            name: t.name,
-		                            charset: "ansii",
-		                            the_url: t.the_url,
-		                            filename: t.filename
-		                        }
-                            	a[i] = testEditor;
+
+                            a[i] = void 0,
+                                $(".edit_body .this").removeClass("this"), //这两句就是切换标签用的,this类为display:block 其他的pre都隐藏了 所以达到切换标签的功能
+                                $(".edit_body pre#" + i).addClass("this"); //给这个层级加上this类 难道是根据这个判断当期激活页面
+                            if (n.ext != 'md') {
+                                a[i] = void 0,
+                                    $("pre#" + i).text(n.content), //把内容添加到这个层里
+                                    c(t); //创建个编辑器,并根据上面那个层的内容做成编辑器
+                                //确实不明白下面这两句什么意思
+                                //                                $(".edit_body .this").removeClass("this"),
+                                //                                $(".edit_body pre#" + i).addClass("this");    //给这个层级加上this类 难道是根据这个判断当期激活页面
+                                var s = a[i];
+                                s.kod.charset = n.charset,
+                                    s.navigateTo(0),
+                                    s.moveCursorTo(0, 0); //还是这个是切换页面时,显示当前选择的页面??
+                            } else {
+                                cm(t, n);
                             }
-                           
-	                        console.log(a);    
+
                         }
                     })
                 },
@@ -1175,11 +1147,31 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             animate_time = n
                     } else Tap.resetWidth("add")
                 },
+                cm = function(e, n) {
+                    var i = e.uuid;
+                    ext = n.ext;
+                    editormd.doSomething(i, n.content);
+                    em.kod = {
+                        mode: e.mode,
+                        uuid: e.uuid,
+                        name: e.name,
+                        charset: n.charset,
+                        the_url: e.the_url,
+                        filename: e.filename
+                    },
+                    //em.hasChanged = !1,
+                    em.on("change", function() {
+                            h(em, !0),
+                            auto_function_list && "block" == $(".frame_right .function_list").css("display") && FunctionList.refresh()
+                        }),
+                    a[i] = em; 
+
+                },
                 //创建代码编辑器
                 c = function(e) {
                     var i = ace.edit(e.uuid);
                     i.setTheme("ace/theme/" + t.theme),
-                    void 0 != e.mode && i.getSession().setMode("ace/mode/" + e.mode),
+                        void 0 != e.mode && i.getSession().setMode("ace/mode/" + e.mode),
                         i.getSession().setTabSize(4),
                         i.getSession().setUseSoftTabs(!0),
                         i.getSession().setUseWrapMode(t.wrap),
@@ -1197,7 +1189,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         i.on("change",
                             function() {
                                 h(i, !0),
-                                auto_function_list && "block" == $(".frame_right .function_list").css("display") && FunctionList.refresh()
+                                    auto_function_list && "block" == $(".frame_right .function_list").css("display") && FunctionList.refresh()
                             }),
                         i.commands.addCommand({
                             name: "editSave",
@@ -1241,7 +1233,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 Toolbar.doAction("refresh")
                             }
                         }),
-                    e.mode || (e.mode = ""),
+                        e.mode || (e.mode = ""),
                         i.kod = {
                             mode: e.mode,
                             uuid: e.uuid,
@@ -1251,8 +1243,8 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             filename: e.filename
                         },
                         i.hasChanged = !1,
-                        a[e.uuid] = i,	//把对象加到数组里
-                        d(e.uuid, !1)	//这是什么 激活当前页?
+                        a[e.uuid] = i, //把对象加到数组里
+                        d(e.uuid, !1) //这是什么 激活当前页?
                 },
                 d = function(e, t) {
                     if ($(".edit_tab .this").removeClass("this"), $(".edit_tab .tab_" + e).addClass("this"), i = e, void 0 != a[e] && a[e].focus(), t && $(".edit_tab .this").stop(!0, !0).animate({
@@ -1272,29 +1264,29 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 a[e].focus()
                             }), auto_function_list) {
                         if (!Editor.current()) return;
-                        "none" == $(".frame_right .preview").css("display") && ( - 1 == $.inArray(a[e].kod.mode, FunctionList.mode_list()) ? preview.close() : "none" == $(".frame_right .function_list").css("display") && preview.open("function_list")),
+                        "none" == $(".frame_right .preview").css("display") && (-1 == $.inArray(a[e].kod.mode, FunctionList.mode_list()) ? preview.close() : "none" == $(".frame_right .function_list").css("display") && preview.open("function_list")),
                             FunctionList.refresh()
                     }
                     if (Editor.current()) try {
                         var n = window.parent.art.dialog.list.openEditor,
                             s = '<img draggable="false" src="' + G.static_path + 'images/file_16/edit.png"/>' + urlDecode(urlDecode(Editor.current().kod.filename));
                         n && n.title(s)
-                    } catch(o) {}
+                    } catch (o) {}
                 },
                 p = function(e, t) {
                     void 0 != e && "" != e && (d(e, t), $(".edit_body .this").removeClass("this"), $(".edit_body pre#" + e).addClass("this"))
                 },
                 u = function(e, i, n) {
                     var s = a;
-                    void 0 != n && (s = {},s[n] = a[n]);
+                    void 0 != n && (s = {}, s[n] = a[n]);
                     var o = void 0;
                     for (var r in s) {
                         var l = s[r];
                         switch (e) {
                             case "resize":
-                            	if(ext != "md"){
-                            		l.resize();
-                            	}
+                                if (ext != "md") {
+                                    l.resize();
+                                }
                                 break;
                             case "theme":
                                 t[e] = i,
@@ -1318,7 +1310,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 t[e] = !l.getSession().getUseWrapMode(),
                                     l.getSession().setUseWrapMode(t[e]),
                                     G.code_config.auto_wrap = t[e];
-                                var c = t[e] ? 1: 0;
+                                var c = t[e] ? 1 : 0;
                                 o = {
                                     k: "auto_wrap",
                                     v: c
@@ -1328,7 +1320,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 t[e] = !l.getShowInvisibles(),
                                     l.setShowInvisibles(t[e]),
                                     G.code_config.display_char = t[e];
-                                var c = t[e] ? 1: 0;
+                                var c = t[e] ? 1 : 0;
                                 o = {
                                     k: "display_char",
                                     v: c
@@ -1352,7 +1344,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                     }),
                                     l.$enableBasicAutocompletion = t[e],
                                     G.code_config.auto_complete = t[e];
-                                var c = t[e] ? 1: 0;
+                                var c = t[e] ? 1 : 0;
                                 o = {
                                     k: "auto_complete",
                                     v: c
@@ -1369,13 +1361,16 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         success: function() {}
                     })
                 },
-                h = function(e, t) {
+                //当编辑器改动时,标签样式改变,从而达到提示
+                h = function(e, t) {	//e 编辑器对象  t 其实是个bool值 true
+                	//后面那个 = 是赋值 前面那个 != 是 判断  
+                	//因为 toggleClass 是交替变化的  但是change这个状态每次输入都会触发 所以为了样式不改所以把 e.hasChanged改为 t 一样,这样 t != e.hasChanged 不成立 所以样式就不会改变了
                     t != e.hasChanged && (e.hasChanged = t, $(".edit_tab .tabs .tab_" + e.kod.uuid).toggleClass("edit_changed"))
                 },
                 f = function(e, t) {
                     if (void 0 != i) {
                         void 0 == e && (e = i),
-                        void 0 == t && (t = !1);
+                            void 0 == t && (t = !1);
                         var n = a[e];
                         if (n.hasChanged) {
                             if (void 0 == n || "" == n) return tips(LNG.data_error, "warning"),
@@ -1398,7 +1393,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                     error: core.ajaxError,
                                     success: function(a) {
                                         Tips.close(a),
-                                        a.code && (h(n, !1), t && _(e))
+                                            a.code && (h(n, !1), t && _(e))
                                     }
                                 })
                         }
@@ -1425,32 +1420,32 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 callback: function() {
                                     f(e, !0)
                                 }
-                            },
-                                {
-                                    name: LNG.button_not_save,
-                                    callback: function() {
-                                        _(e)
-                                    }
-                                }]
+                            }, {
+                                name: LNG.button_not_save,
+                                callback: function() {
+                                    _(e)
+                                }
+                            }]
                         }) : _(e)
                     }
                 },
-                _ = function(e) {   //这个好像是关闭功能	//就是关闭标签功能
-                	console.log(a);
+                _ = function(e) { //这个好像是关闭功能   //就是关闭标签功能
+                    //console.log(e);
                     delete a[e];
                     var t = "",
                         i = $(".edit_tab .tab"),
                         n = $(".edit_tab .tab_" + e),
                         s = $(".edit_body pre#" + e);
                     n.hasClass("this") ? ($(i[0]).attr("uuid") == e ? t = $(i[1]).attr("uuid") : i.each(function() {
-                        var a = $(this).attr("uuid");
-                        return a == e ? !1: (t = a, void 0)
-                    }), "" != t && $(".edit_body pre#" + t).addClass("this"), s.remove(), Tap.resetWidth("remove", n, t)) : (s.remove(), Tap.resetWidth("remove", n)),
-                    0 == $(".edit_body .tabs pre").length && preview.close()
+                            var a = $(this).attr("uuid");
+                            return a == e ? !1 : (t = a, void 0)
+                        }), "" != t && $(".edit_body pre#" + t).addClass("this"), s.remove(), Tap.resetWidth("remove", n, t)) : (s.remove(), Tap.resetWidth("remove", n)),
+                        0 == $(".edit_body .tabs pre").length && preview.close()
                 },
                 g = function() {
-                    for (var e in a) if (a[e].hasChanged) return ! 0;
-                    return ! 1
+                    for (var e in a)
+                        if (a[e].hasChanged) return !0;
+                    return !1
                 },
                 b = function(e) {
                     core.setSkin(e, "app_code_edit.css")
@@ -1508,8 +1503,10 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
     define("app/src/edit/mode", [],
         function() {
             function e() {
-                for (var e in i) for (var t = 0; i[e].length > t; t++) a[i[e][t]] = e
+                for (var e in i)
+                    for (var t = 0; i[e].length > t; t++) a[i[e][t]] = e
             }
+
             function t(e) {
                 return a[e]
             }
@@ -1620,8 +1617,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     xquery: ["xq"],
                     yaml: ["yaml", "yml"]
                 };
-            return e(),
-            {
+            return e(), {
                 get: t,
                 modes: a,
                 modeAll: function() {
@@ -1645,14 +1641,14 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     var t = G.static_path + "images/file_16/",
                         a = ["folder", "file", "edit", "search", "up", "setting", "appStore", "error", "info", "mp3", "flv", "pdf", "doc", "xls", "ppt", "html", "swf"],
                         i = $.inArray(e, a);
-                    return - 1 == i ? t + "file.png": t + e + ".png"
+                    return -1 == i ? t + "file.png" : t + e + ".png"
                 },
                 contextmenu: function(e) {
                     try {
                         rightMenu.hidden()
-                    } catch(t) {}
+                    } catch (t) {}
                     var t = e || window.event;
-                    return t ? t && $(t.target).is("textarea") || $(t.target).is("input") || 0 != $(t.target).parents(".topbar").length || 0 != $(t.target).parents(".edit_body").length || 0 != $(t.target).parents(".aui_state_focus").length ? !0: !1: !0
+                    return t ? t && $(t.target).is("textarea") || $(t.target).is("input") || 0 != $(t.target).parents(".topbar").length || 0 != $(t.target).parents(".edit_body").length || 0 != $(t.target).parents(".aui_state_focus").length ? !0 : !1 : !0
                 },
                 pathThis: function(e) {
                     e = e.replace(/\\/g, "/");
@@ -1662,7 +1658,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         a = urlDecode(a.substr(a.search("&path=")));
                         var t = a.split("/");
                         a = t[t.length - 1],
-                        "" == a && (a = t[t.length - 2])
+                            "" == a && (a = t[t.length - 2])
                     }
                     return a
                 },
@@ -1686,7 +1682,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         t
                 },
                 authCheck: function(e, t) {
-                    return G.is_root ? !0: AUTH.hasOwnProperty(e) ? AUTH[e] ? !0: (void 0 == t && (t = LNG.no_permission), core.tips.tips(t, !1), !1) : !0
+                    return G.is_root ? !0 : AUTH.hasOwnProperty(e) ? AUTH[e] ? !0 : (void 0 == t && (t = LNG.no_permission), core.tips.tips(t, !1), !1) : !0
                 },
                 ajaxError: function(e) {
                     core.tips.close(LNG.system_error, !1);
@@ -1717,12 +1713,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             error: core.ajaxError,
                             success: function(e) {
                                 core.tips.close(LNG.success),
-                                "function" == typeof t && t(e.data.content)
+                                    "function" == typeof t && t(e.data.content)
                             }
                         })
                 },
                 setting: function(e) {
-                    void 0 == e && (e = G.is_root ? "system": "user"),
+                    void 0 == e && (e = G.is_root ? "system" : "user"),
                         void 0 == window.top.frames.Opensetting_mode ? $.dialog.open("./index.php?setting#" + e, {
                             id: "setting_mode",
                             fixed: !0,
@@ -1776,8 +1772,8 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                 openApp: function(app) {
                     if ("url" == app.type) {
                         var icon = app.icon; - 1 == app.icon.search(G.static_path) && "http" != app.icon.substring(0, 4) && (icon = G.static_path + "images/app/" + app.icon),
-                        "number" != typeof app.width && -1 == app.width.search("%") && (app.width = parseInt(app.width)),
-                        "number" != typeof app.height && -1 == app.height.search("%") && (app.height = parseInt(app.height)),
+                            "number" != typeof app.width && -1 == app.width.search("%") && (app.width = parseInt(app.width)),
+                            "number" != typeof app.height && -1 == app.height.search("%") && (app.height = parseInt(app.height)),
                             $.dialog.open(app.content, {
                                 title: app.name,
                                 fixed: !0,
@@ -1798,12 +1794,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     var e = base64_decode("aHR0cDovL3N0YXRpYy5rYWxjYWRkbGUuY29tL3VwZGF0ZS9tYWluLmpz") + "?a=" + UUID();
                     require.async(e,
                         function() {
-                            try {} catch(e) {}
+                            try {} catch (e) {}
                         })
                 },
                 explorer: function(e, t) {
                     void 0 == e && (e = ""),
-                    void 0 == t && (t = core.pathThis(e));
+                        void 0 == t && (t = core.pathThis(e));
                     var a = "./index.php?/explorer&type=iframe&path=" + e;
                     G.share_page !== void 0 && (a = "./index.php?share/folder&type=iframe&user=" + G.user + "&sid=" + G.sid + "&path=" + e),
                         $.dialog.open(a, {
@@ -1846,7 +1842,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                 },
                 tips: {
                     topHeight: function() {
-                        return "undefined" != typeof Global && Global.topbar_height ? Global.topbar_height: 0
+                        return "undefined" != typeof Global && Global.topbar_height ? Global.topbar_height : 0
                     },
                     loading: function(e) {
                         Tips.loading(e, "info", core.tips.topHeight())
@@ -1880,13 +1876,13 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         o = function() {
                             var s = template.compile(n);
                             0 == $(".dialog_do_search").length ? (l(), i = {
-                                search: e,
-                                path: t,
-                                is_content: void 0,
-                                is_case: void 0,
-                                ext: "",
-                                LNG: LNG
-                            },
+                                    search: e,
+                                    path: t,
+                                    is_content: void 0,
+                                    is_case: void 0,
+                                    ext: "",
+                                    LNG: LNG
+                                },
                                 a = $.dialog({
                                     id: "dialog_do_search",
                                     padding: 0,
@@ -1897,31 +1893,31 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                     width: 450,
                                     content: s(i)
                                 }), c(i), $("#search_ext").tooltip({
-                                placement: "bottom",
-                                html: !0
-                            }), $("#search_path").tooltip({
-                                placement: "bottom",
-                                html: !0,
-                                title: function() {
-                                    return $("#search_path").val()
-                                }
-                            })) : ($("#search_value").val(e), $("#search_path").val(t), r(), $.dialog.list.dialog_do_search.display(!0))
+                                    placement: "bottom",
+                                    html: !0
+                                }), $("#search_path").tooltip({
+                                    placement: "bottom",
+                                    html: !0,
+                                    title: function() {
+                                        return $("#search_path").val()
+                                    }
+                                })) : ($("#search_value").val(e), $("#search_path").val(t), r(), $.dialog.list.dialog_do_search.display(!0))
                         },
                         r = function() {
                             i = {
-                                search: $("#search_value").val(),
-                                path: $("#search_path").val(),
-                                is_content: $("#search_is_content").attr("checked"),
-                                is_case: $("#search_is_case").attr("checked"),
-                                ext: $("#search_ext").val()
-                            },
+                                    search: $("#search_value").val(),
+                                    path: $("#search_path").val(),
+                                    is_content: $("#search_is_content").attr("checked"),
+                                    is_case: $("#search_is_case").attr("checked"),
+                                    ext: $("#search_ext").val()
+                                },
                                 c(i)
                         },
                         l = function() {
                             $("#search_value").die("keyup").live("keyup",
-                                function() {
-                                    ui.path.setSearchByStr($(this).val())
-                                }),
+                                    function() {
+                                        ui.path.setSearchByStr($(this).val())
+                                    }),
                                 $("#search_value,#search_ext,#search_path").keyEnter(r),
                                 $(".search_header a.button").die("click").live("click", r),
                                 $(".search_result .list .name").die("click").live("click",
@@ -1988,17 +1984,17 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         p = $("#" + n + " .state").text(LNG.download_ready),
                         u = $('<div class="progress progress-striped active"><div class="progress-bar" role="progressbar" style="width: 0%;text-align:right;"></div></div>').appendTo("#" + n).find(".progress-bar");
                     $("#" + n + " .remove").bind("click",
-                        function() {
-                            clearInterval(o),
-                                o = !1,
-                                clearTimeout(r),
-                                o = !1,
-                                $.get("./index.php?explorer/serverDownload&type=remove&uuid=" + n),
-                                $(this).parent().parent().slideUp(function() {
-                                    $(this).remove(),
-                                        ui.f5()
-                                })
-                        }),
+                            function() {
+                                clearInterval(o),
+                                    o = !1,
+                                    clearTimeout(r),
+                                    o = !1,
+                                    $.get("./index.php?explorer/serverDownload&type=remove&uuid=" + n),
+                                    $(this).parent().parent().slideUp(function() {
+                                        $(this).remove(),
+                                            ui.f5()
+                                    })
+                            }),
                         $.ajax({
                             url: "./index.php?explorer/serverDownload&type=download&save_path=" + e + "&url=" + urlEncode2(i) + "&uuid=" + n,
                             dataType: "json",
@@ -2073,44 +2069,44 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         KB: 1024,
                         "B ": 0
                     };
-                    for (var a in t) if (e >= t[a]) return (e / t[a]).toFixed(1) + a;
+                    for (var a in t)
+                        if (e >= t[a]) return (e / t[a]).toFixed(1) + a;
                     return "0B"
                 },
                 upload_check: function(e) {
-                    return void 0 == e && (e = "explorer:fileUpload"),
-                        !G.is_root && AUTH.hasOwnProperty(e) && 1 != AUTH[e] ? (core.tips.tips(LNG.no_permission, !1), void 0) : "*recycle*/" == G.this_path || "*share*/" == G.this_path || "*share*/" == G.this_path || G.json_data && "writeable" != G.json_data.path_type ? (core.tips.tips(LNG.no_permission_write, !1), !1) : !0
+                    return void 0 == e && (e = "explorer:fileUpload"), !G.is_root && AUTH.hasOwnProperty(e) && 1 != AUTH[e] ? (core.tips.tips(LNG.no_permission, !1), void 0) : "*recycle*/" == G.this_path || "*share*/" == G.this_path || "*share*/" == G.this_path || G.json_data && "writeable" != G.json_data.path_type ? (core.tips.tips(LNG.no_permission_write, !1), !1) : !0
                 },
                 upload: function() {
                     G.upload_path = G.this_path;
                     var e = urlDecode(G.upload_path);
-                    if (uploader.option("server", "index.php?explorer/fileUpload&path=" + urlEncode(G.upload_path)), 30 >= e.length ? e: "..." + e.substr(e.length - 30), 0 != $(".dialog_file_upload").length) return $.dialog.list.dialog_file_upload.display(!0),
+                    if (uploader.option("server", "index.php?explorer/fileUpload&path=" + urlEncode(G.upload_path)), 30 >= e.length ? e : "..." + e.substr(e.length - 30), 0 != $(".dialog_file_upload").length) return $.dialog.list.dialog_file_upload.display(!0),
                         void 0;
                     var t = require("../tpl/upload.html"),
                         a = template.compile(t),
                         i = WebUploader.Base.formatSize(G.upload_max);
                     $.dialog({
-                        padding: 5,
-                        resize: !0,
-                        ico: core.ico("up"),
-                        id: "dialog_file_upload",
-                        fixed: !0,
-                        title: LNG.upload_muti,
-                        content: a({
-                            LNG: LNG,
-                            maxsize: i
+                            padding: 5,
+                            resize: !0,
+                            ico: core.ico("up"),
+                            id: "dialog_file_upload",
+                            fixed: !0,
+                            title: LNG.upload_muti,
+                            content: a({
+                                LNG: LNG,
+                                maxsize: i
+                            }),
+                            close: function() {
+                                $.each(uploader.getFiles(),
+                                        function(e, t) {
+                                            uploader.skipFile(t),
+                                                uploader.removeFile(t)
+                                        }),
+                                    $.each($("#download_list .item"),
+                                        function() {
+                                            $(this).find(".remove").click()
+                                        })
+                            }
                         }),
-                        close: function() {
-                            $.each(uploader.getFiles(),
-                                function(e, t) {
-                                    uploader.skipFile(t),
-                                        uploader.removeFile(t)
-                                }),
-                                $.each($("#download_list .item"),
-                                    function() {
-                                        $(this).find(".remove").click()
-                                    })
-                        }
-                    }),
                         $(".file_upload .tips").tooltip({
                             placement: "bottom"
                         }),
@@ -2187,7 +2183,10 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         o = function(e, t) {
                             var a = e.size * t,
                                 i = 5;
-                            e.speed === void 0 ? e.speed = [[time() - 500, 0], [time(), a]] : i >= e.speed.length ? e.speed.push([time(), a]) : (e.speed = e.speed.slice(1, i), e.speed.push([time(), a]));
+                            e.speed === void 0 ? e.speed = [
+                                [time() - 500, 0],
+                                [time(), a]
+                            ] : i >= e.speed.length ? e.speed.push([time(), a]) : (e.speed = e.speed.slice(1, i), e.speed.push([time(), a]));
                             var n = e.speed[e.speed.length - 1],
                                 o = e.speed[0],
                                 r = (n[1] - o[1]) / ((n[0] - o[0]) / 1e3);
@@ -2198,8 +2197,9 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         r = [];
                     uploader.on("uploadBeforeSend",
                         function(e, t) {
-                            var a = urlEncode(e.file.fullPath); (void 0 == a || "undefined" == a) && (a = ""),
-                                t.fullPath = a
+                            var a = urlEncode(e.file.fullPath);
+                            (void 0 == a || "undefined" == a) && (a = ""),
+                            t.fullPath = a
                         }).on("fileQueued",
                         function(t) {
                             if (!core.upload_check()) return uploader.skipFile(t),
@@ -2209,9 +2209,9 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 n = $(e),
                                 a = t.fullPath;
                             t.finished = !1,
-                            (void 0 == a || "undefined" == a) && (a = t.name),
+                                (void 0 == a || "undefined" == a) && (a = t.name),
                                 i++,
-                            $(e).find(".item").length > 0 && (n = $(e).find(".item:eq(0)"));
+                                $(e).find(".item").length > 0 && (n = $(e).find(".item:eq(0)"));
                             var s = '<div id="' + t.id + '" class="item"><div class="info">' + '<span class="title" title="' + G.upload_path + a + '">' + core.pathThis(a) + "</span>" + '<span class="size">' + core.file_size(t.size) + "</span>" + '<span class="state">' + LNG.upload_ready + "</span>" + '<a class="remove font-icon icon-remove" href="javascript:void(0)"></a>' + '<div style="clear:both"></div></div></div>';
                             $(e).find(".item").length > 0 ? $(s).insertBefore($(e).find(".item:eq(0)")) : $(e).append(s),
                                 uploader.upload()
@@ -2229,7 +2229,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                             e.file.serverData = t;
                             try {
                                 r.push(core.pathThis(t.info))
-                            } catch(a) {}
+                            } catch (a) {}
                         }).on("uploadSuccess",
                         function(e) {
                             var t = 36 * $("#" + e.id).index(".item");
@@ -2245,7 +2245,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                         }).on("uploadError",
                         function(e, t) {
                             n++,
-                                $("#" + e.id).find(".progress").fadeOut(),
+                            $("#" + e.id).find(".progress").fadeOut(),
                                 $("#" + e.id).addClass("error").find(".state").addClass("error"),
                                 $("#" + e.id).find(".state").text(LNG.upload_error + "(" + t + ")")
                         }).on("uploadFinished",
@@ -2254,7 +2254,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                 i = 0,
                                 n = 0,
                                 uploader.reset(),
-                            "explorer" == Config.pageApp && ui.tree.checkIfChange(G.this_path);
+                                "explorer" == Config.pageApp && ui.tree.checkIfChange(G.this_path);
                             var e = r;
                             ui.f5_callback(function() {
                                 ui.path.setSelectByFilename(e),
@@ -2268,11 +2268,11 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                     inState = !1,
                         dragOver = function() {
                             0 == inState && (inState = !0, MaskView.tips(LNG.upload_drag_tips)),
-                            l && window.clearTimeout(l)
+                                l && window.clearTimeout(l)
                         },
                         dragLeave = function(e) {
                             stopPP(e),
-                            l && window.clearTimeout(l),
+                                l && window.clearTimeout(l),
                                 l = window.setTimeout(function() {
                                         inState = !1,
                                             MaskView.close()
@@ -2286,13 +2286,13 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util","lib/contextMenu/jquer
                                     t && "http" == t.substring(0, 4) ? ui.pathOperate.appAddURL(t) : core.upload()
                                 }
                                 stopPP(e)
-                            } catch(e) {}
+                            } catch (e) {}
                             inState && (inState = !1, MaskView.close())
                         }
                 }
             }
         }),
-    define("app/tpl/copyright.html", [], '<div class="copyright_dialog_content">\n	<div class="title">\n		<div class="logo"><i class="icon-cloud"></i>KodExplorer v{{G.version}}</div>\n		<div class=\'info\'>——{{LNG.kod_name_copyright}}</div>\n	</div>\n	<div class="content">\n		<p>{{#LNG.copyright_desc}}</p>\n		<div>{{#LNG.copyright_contact}}</div>\n		<div>{{#LNG.copyright_info}}</div> \n	</div>\n</div>'),
+    define("app/tpl/copyright.html", [], '<div class="copyright_dialog_content">\n  <div class="title">\n       <div class="logo"><i class="icon-cloud"></i>KodExplorer v{{G.version}}</div>\n      <div class=\'info\'>——{{LNG.kod_name_copyright}}</div>\n    </div>\n    <div class="content">\n     <p>{{#LNG.copyright_desc}}</p>\n        <div>{{#LNG.copyright_contact}}</div>\n     <div>{{#LNG.copyright_info}}</div> \n   </div>\n</div>'),
     define("app/tpl/search.html", [], "<div class='do_search'>\n    <div class='search_header'>\n       <div class='s_br'>\n            <input type='text' id='search_value' value='{{search}}'/><a class='right button icon-search'></a>\n            <div style='float:right'>{{LNG.path}}:<input type='text' id='search_path' value='{{path}}'/></div>\n        </div>\n       <div class='s_br'>\n            <input type='checkbox' id='search_is_case' {{if is_case}}checked='true'{{/if}}/>\n            <label for='search_is_case'>{{LNG.search_uplow}}</label>\n            <input type='checkbox' id='search_is_content' {{if is_content}}checked='true'{{/if}}/>\n            <label for='search_is_content'>{{LNG.search_content}}</label>\n            <div style='float:right'>{{LNG.file_type}}:<input type='text' id='search_ext' value='{{ext}}' title='{{LNG.search_ext_tips}}'/></div>\n        </div>\n    </div>\n    <div class='search_result'>\n        <table border='0' cellspacing='0' cellpadding='0'>\n            <tr class='search_title'>\n               <td class='name'>{{LNG.name}}</td>\n               <td class='type'>{{LNG.type}}</td>\n               <td class='size'>{{LNG.size}}</td>\n               <td class='path'>{{LNG.path}}</td>\n            </tr>\n            <tr class='message'><td colspan='4'></td></tr>\n        </table>\n    </div>\n</div>\n\n"),
     define("app/tpl/search_list.html", [], "{{each folderlist as v i}}\n    <tr class='list folder' data-path='{{v.path}}{{v.name}}' data-type='folder' data-size='0'>\n        <td class='name'><a href='javascript:void(0);' title='{{LNG.open}}{{v.name}}'>{{v.name}}</a></td>\n        <td class='type'>{{LNG.folder}}</td>\n        <td class='size'>0</td>\n        <td class='path'><a href='javascript:void(0);' title='{{LNG.goto}}{{v.path}}'>{{v.path}}</a></td>\n    </tr>\n{{/each}}\n{{each filelist as v i}}\n<tr class='list file'\n    data-path='{{v.path}}{{v.name}}' \n    data-type='{{v.ext}}' \n    data-size='{{v.size}}'>\n    <td class='name'><a href='javascript:void(0);' title='{{LNG.open}}{{v.name}}'>{{v.name}}</a></td>\n    <td class='type'>{{v.ext}}</td>\n    <td class='size'>{{v.size_friendly}}</td>\n    <td class='path'><a href='javascript:void(0);' title='{{LNG.goto}}{{v.path}}'>{{v.path}}</a></td>\n</tr>\n{{/each}}"),
     define("app/tpl/upload.html", [], "<div class='file_upload'>\n    <div class='top_nav'>\n       <a href='javascript:void(0);' class='menu this tab_upload'>{{LNG.upload_local}}</a>\n       <a href='javascript:void(0);' class='menu tab_download''>{{LNG.download_from_server}}</a>\n       <div style='clear:both'></div>\n    </div>\n    <div class='upload_box'>\n        <div class='btns'>\n            <div id='picker'>{{LNG.upload_select}}</div>\n            <div class=\"upload_box_tips\">\n            <a href=\"javascript:void(0);\" class=\"upload_box_clear\">{{LNG.upload_clear}}</a> \n            <!-- \n            | <a href=\"javascript:void(0);\" class=\"upload_box_setting\">\n            {{LNG.upload_setting}}<b class=\"caret\"></b></a> \n            -->\n            </div>\n            <div style='clear:both'></div>\n        </div>\n\n        <div class=\"upload_box_config hidden\">\n            <i>{{LNG.upload_tips}}</i>\n            <div class=\"upload_check_box\">\n                <b>{{LNG.upload_exist}}</b>\n                <label><input type=\"radio\" name=\"existing\" value=\"rename\" checked=\"checked\">{{LNG.upload_exist_rename}}</label>\n                <label><input type=\"radio\" name=\"existing\" value=\"replace\">{{LNG.upload_exist_replace}}</label>\n                <label><input type=\"radio\" name=\"existing\" value=\"skip\">{{LNG.upload_exist_skip}}</label>\n            </div>\n        </div>\n        <div id='uploader' class='wu-example'>\n            <div id='thelist' class='uploader-list'></div>\n        </div>\n    </div>\n    <div class='download_box hidden'>\n        <div class='list'>{{LNG.download_address}}<input type='text' name='url'/>\n        <button class='btn btn-default btn-sm' type='button'>{{LNG.download}}</button>\n        </div>\n        <div style='clear:both'></div>\n        <div id='downloader'>\n            <div id='download_list' class='uploader-list'></div>\n        </div>\n    </div>\n</div>");
