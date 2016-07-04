@@ -679,7 +679,7 @@
 
 .editormd .CodeMirror {
   z-index: 10;
-  /*float: left;*/
+  /*float: left;*/	 /*解决偏移问题 */
   border-right: 1px solid #ddd;
   font-size: 14px;
   font-family: "YaHei Consolas Hybrid", Consolas, "微软雅黑", "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, "Monaco", courier, monospace;

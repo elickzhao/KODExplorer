@@ -1138,8 +1138,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                 l = function(e, t) {
                     var a = '<div class="edit_tab_menu tab tab_' + e.uuid + '" uuid="' + e.uuid + '" title="' + urlDecode(urlDecode(e.filename)) + '">' + '   <div class="name">' + e.name + "</div>" + '   <a href="javascript:void(0);" class="close icon-remove-sign"></a>' + '   <div style="clear:both;"></div>' + "</div>";
                     $(a).insertBefore(".edit_tab .add");
-                    var i = '<pre id="' + e.uuid + '" class="edit_content" style="overflow:hidden;"></pre>';
-                    //var i = '<div id="' + e.uuid + '" class="edit_content"></div>';
+                    var i = '<pre id="' + e.uuid + '" class="edit_content"></pre>';
                     if ($(".edit_body .tabs").append(i), d(e.uuid), t) {
                         var n = animate_time;
                         animate_time = 1,
@@ -1164,6 +1163,18 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                             h(em, !0),
                             auto_function_list && "block" == $(".frame_right .function_list").css("display") && FunctionList.refresh()
                         }),
+					em.on("load",function(){
+						//alert('ddd');
+						var keyMap = {
+							"Ctrl-S": function(cm) {
+				                f(i);
+				            },
+				            "F5":function(){
+				            	Toolbar.doAction("refresh");
+				            }
+						};
+						this.addKeyMap(keyMap);
+					}),
                     a[i] = em; 
 
                 },

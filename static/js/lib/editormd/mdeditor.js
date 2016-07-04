@@ -15,7 +15,6 @@ define(
 
 	var uri = (module.uri);
 	var libpath = uri.substr(0,(uri.length-20))+"lib/";
-	//exports.foo = 'bar';
 	exports.doSomething = function(id,md) {
 		em = editormd(id, {
 		            width: "100%",
