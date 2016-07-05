@@ -1120,9 +1120,6 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                                 a[i] = void 0,
                                     $("pre#" + i).text(n.content), //把内容添加到这个层里
                                     c(t); //创建个编辑器,并根据上面那个层的内容做成编辑器
-                                //确实不明白下面这两句什么意思
-                                //                                $(".edit_body .this").removeClass("this"),
-                                //                                $(".edit_body pre#" + i).addClass("this");    //给这个层级加上this类 难道是根据这个判断当期激活页面
                                 var s = a[i];
                                 s.kod.charset = n.charset,
                                     s.navigateTo(0),
@@ -1378,10 +1375,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                 	//因为 toggleClass 是交替变化的  但是change这个状态每次输入都会触发 所以为了样式不改所以把 e.hasChanged改为 t 一样,这样 t != e.hasChanged 不成立 所以样式就不会改变了
                     t != e.hasChanged && (e.hasChanged = t, $(".edit_tab .tabs .tab_" + e.kod.uuid).toggleClass("edit_changed"))
                 },
+                //保存修改
                 f = function(e, t) {
                     if (void 0 != i) {
                         void 0 == e && (e = i),
                             void 0 == t && (t = !1);
+                        console.log(e);    
                         var n = a[e];
                         if (n.hasChanged) {
                             if (void 0 == n || "" == n) return tips(LNG.data_error, "warning"),

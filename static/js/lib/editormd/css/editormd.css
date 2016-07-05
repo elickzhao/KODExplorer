@@ -4052,6 +4052,7 @@ li.L9 {
   border: 1px solid #ddd;
   white-space: pre-wrap;
   word-wrap: break-word;
+  display: block;
 }
 .editormd-preview-container ol.linenums, .editormd-html-preview ol.linenums {
   color: #999;
