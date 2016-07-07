@@ -1147,6 +1147,8 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                     var i = e.uuid;
                     ext = n.ext;
                     editormd.doSomething(i, n.content);
+//                  var d = new editormd();
+//                  var em = d.render(i,n.content);
                     em.kod = {
                         mode: e.mode,
                         uuid: e.uuid,
@@ -1155,13 +1157,20 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                         the_url: e.the_url,
                         filename: e.filename
                     },
-                    //em.hasChanged = !1,
-                    em.on("change", function() {
-                            h(em, !0),
-                            auto_function_list && "block" == $(".frame_right .function_list").css("display") && FunctionList.refresh()
-                        }),
-					em.on("load",function(){
-						//alert('ddd');
+//                  em.hasChanged = !1,
+//                  em.on("change", function() {  
+//                  		///console.log($("#"+cid).hasClass("this"));
+//	                    	if($("#"+cid).hasClass("this") && ii){
+//	                    		em.kod.uuid = cid;
+//	                            h(em, !0),
+//	                            auto_function_list && "block" == $(".frame_right .function_list").css("display") && FunctionList.refresh();
+//	                       }
+//	                    	ii++;
+//                      }),
+//					em.on("change",function(){
+//						console.log('2');
+//					}),
+					em.on("load",function(){					
 						var keyMap = {
 							"Ctrl-S": function(cm) {
 				                f(i);
@@ -1173,7 +1182,8 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
 						this.addKeyMap(keyMap);
 					}),
                     a[i] = em; 
-
+//                  console.log(a);
+//					console.log(e.hasChanged);
                 },
                 //创建代码编辑器
                 c = function(e) {
@@ -1371,6 +1381,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                 },
                 //当编辑器改动时,标签样式改变,从而达到提示
                 h = function(e, t) {	//e 编辑器对象  t 其实是个bool值 true
+                	//console.log(e.hasChanged+'----'+t);
                 	//后面那个 = 是赋值 前面那个 != 是 判断  
                 	//因为 toggleClass 是交替变化的  但是change这个状态每次输入都会触发 所以为了样式不改所以把 e.hasChanged改为 t 一样,这样 t != e.hasChanged 不成立 所以样式就不会改变了
                     t != e.hasChanged && (e.hasChanged = t, $(".edit_tab .tabs .tab_" + e.kod.uuid).toggleClass("edit_changed"))
@@ -1380,7 +1391,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                     if (void 0 != i) {
                         void 0 == e && (e = i),
                             void 0 == t && (t = !1);
-                        console.log(e);    
+                        //console.log(e);    
                         var n = a[e];
                         if (n.hasChanged) {
                             if (void 0 == n || "" == n) return tips(LNG.data_error, "warning"),
