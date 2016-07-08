@@ -1157,20 +1157,12 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                         the_url: e.the_url,
                         filename: e.filename
                     },
-//                  em.hasChanged = !1,
-//                  em.on("change", function() {  
-//                  		///console.log($("#"+cid).hasClass("this"));
-//	                    	if($("#"+cid).hasClass("this") && ii){
-//	                    		em.kod.uuid = cid;
-//	                            h(em, !0),
-//	                            auto_function_list && "block" == $(".frame_right .function_list").css("display") && FunctionList.refresh();
-//	                       }
-//	                    	ii++;
-//                      }),
-//					em.on("change",function(){
-//						console.log('2');
-//					}),
-					em.on("load",function(){					
+					em.on("load",function(){	
+						//非常无奈的办法,因为输入内容第二次打开是空白
+						//还没找到出错原因,只能用这个方法暂时坐到正常效果
+						this.unwatch();
+						this.watch();
+						
 						var keyMap = {
 							"Ctrl-S": function(cm) {
 				                f(i);
@@ -1182,8 +1174,7 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
 						this.addKeyMap(keyMap);
 					}),
                     a[i] = em; 
-//                  console.log(a);
-//					console.log(e.hasChanged);
+                    
                 },
                 //创建代码编辑器
                 c = function(e) {
@@ -1451,7 +1442,6 @@ define("app/src/edit/main", ["lib/jquery-lib", "lib/util", "lib/contextMenu/jque
                     }
                 },
                 _ = function(e) { //这个好像是关闭功能   //就是关闭标签功能
-                    //console.log(e);
                     delete a[e];
                     var t = "",
                         i = $(".edit_tab .tab"),

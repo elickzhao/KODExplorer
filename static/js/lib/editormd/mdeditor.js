@@ -47,6 +47,12 @@ define(
 	                    	//console.log(this.id+"----"+a[id]);
                     	}
 						a[id][1] = 1;
+                   },	//因为watch变化也算是change,所以必须清除掉,使得只有内容变换才算是change,以后可以加扩展这个监听吧
+					onwatch : function() {
+						a[id][1] = 0;
+                    },
+                    onunwatch : function() {
+                    	a[id][1] = 0;
                     }
 		});
 	 };
