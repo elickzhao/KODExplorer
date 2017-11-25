@@ -1,1 +1,1 @@
-<?php exit;?>{"list_type":"list","list_sort_field":"mtime","list_sort_order":"down","theme":"simple\/","codetheme":"clouds","wall":"7","musictheme":"mp3player","movietheme":"webplayer"}
+<?php exit;?>{"list_type":"icon","list_sort_field":"mtime","list_sort_order":"down","theme":"simple\/","codetheme":"clouds","wall":"7","musictheme":"mp3player","movietheme":"webplayer"}
