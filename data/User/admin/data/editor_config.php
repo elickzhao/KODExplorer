@@ -1,1 +1,8 @@
-<?php exit;?>{"font_size":"15px","theme":"clouds","auto_wrap":0,"display_char":0,"auto_complete":1,"function_list":"0"}
+<?php exit;?>{
+    "fontSize": "15px",
+    "theme": "clouds",
+    "autoWrap": 0,
+    "displayChar": 0,
+    "autoComplete": 1,
+    "functionList": "0"
+}

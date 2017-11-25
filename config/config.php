@@ -1,113 +1,102 @@
 <?php
 /*
-* @link http://www.kalcaddle.com/
-* @author warlee | e-mail:kalcaddle@qq.com
+* @link http://kodcloud.com/
+* @author warlee | e-mail:kodcloud@qq.com
 * @copyright warlee 2014.(Shanghai)Co.,Ltd
-* @license http://kalcaddle.com/tools/licenses/license.txt
+* @license http://kodcloud.com/tools/license/license.txt
 */
 
+define('GLOBAL_DEBUG',0);//0 or 1
 @date_default_timezone_set(@date_default_timezone_get());
-@set_time_limit(600);//10min pathInfoMuti,search,upload,download... 
-@ini_set('session.cache_expire',600);
-@ini_set("display_errors","on");
-@error_reporting(E_ERROR|E_WARNING|E_PARSE);
-//error_reporting(E_ALL);
+@set_time_limit(1200);//20min pathInfoMuti,search,upload,download...
+@ini_set("max_execution_time",1200);
+@ini_set('memory_limit','500M');//
+@ini_set('session.cache_expire',1800);
 
-function P($path){return str_replace('\\','/',$path);}
-$web_root = str_replace(P($_SERVER['SCRIPT_NAME']),'',P(dirname(dirname(__FILE__))).'/index.php').'/';
-if (substr($web_root,-10) == 'index.php/') {//解决部分主机不兼容问题
-    $web_root = P($_SERVER['DOCUMENT_ROOT']).'/';
-}
-function is_HTTPS(){  
-    if(!isset($_SERVER['HTTPS'])){
-    	return false;
-    }
-    if($_SERVER['HTTPS'] === 1){  //Apache
-        return true;
-    }elseif($_SERVER['HTTPS'] === 'on'){ //IIS
-        return true;
-    }elseif($_SERVER['SERVER_PORT'] == 443){ //其他
-        return true;
-    }
-    return false;
+if(GLOBAL_DEBUG){
+	define('STATIC_JS','_dev');  //_dev||app
+	define('STATIC_LESS','less');//less||css
+	@ini_set("display_errors","on");
+	@error_reporting(E_ALL^E_NOTICE);//
+}else{
+	define('STATIC_JS','app');  //app
+	define('STATIC_LESS','css');//css
+	@ini_set("display_errors","on");//on off
+	@error_reporting(E_ALL^E_NOTICE^E_WARNING);// 0
 }
 
-define('WEB_ROOT',$web_root);
-define('HOST', (is_HTTPS() ? 'https://' :'http://').$_SERVER['HTTP_HOST'].'/'); //$_SERVER["HTTP_HOST" 返回域名或IP地址
-define('BASIC_PATH',    P(dirname(dirname(__FILE__))).'/');
-define('APPHOST',       HOST.str_replace(WEB_ROOT,'',BASIC_PATH));//程序根目录
-define('TEMPLATE',		BASIC_PATH .'template/');	//模版文件路径
-define('CONTROLLER_DIR',BASIC_PATH .'controller/'); //控制器目录
-define('MODEL_DIR',		BASIC_PATH .'model/');		//模型目录
-define('LIB_DIR',		BASIC_PATH .'lib/');		//库目录
+//header('HTTP/1.1 200 Ok');//兼容部分lightHttp服务器环境; php5.1以下会输出异常；暂屏蔽
+header("Content-type: text/html; charset=utf-8");
+define('BASIC_PATH',str_replace('\\','/',dirname(dirname(__FILE__))).'/');
+define('LIB_DIR',       BASIC_PATH .'app/');     	//系统库目录
+define('PLUGIN_DIR',    BASIC_PATH .'plugins/');	//插件目录
+define('CONTROLLER_DIR',LIB_DIR .'controller/'); 	//控制器目录
+define('MODEL_DIR',     LIB_DIR .'model/');  		//模型目录
+define('TEMPLATE',      LIB_DIR .'template/');   	//模版文件路径
 define('FUNCTION_DIR',	LIB_DIR .'function/');		//函数库目录
-define('CLASS_DIR',		LIB_DIR .'class/');			//内目录
+define('CLASS_DIR',		LIB_DIR .'kod/');			//工具类目录
 define('CORER_DIR',		LIB_DIR .'core/');			//核心目录
-define('DATA_PATH',     BASIC_PATH .'data/');       //用户数据目录
-define('LOG_PATH',      DATA_PATH .'log/');         //日志目录
-define('USER_SYSTEM',   DATA_PATH .'system/');      //用户数据存储目录
-define('DATA_THUMB',    DATA_PATH .'thumb/');       //缩略图生成存放
-define('LANGUAGE_PATH', DATA_PATH .'i18n/');        //多语言目录
-
-define('STATIC_JS','app');  //_dev(开发状态)||app(打包压缩)
-define('STATIC_LESS','css');//less(开发状态)||css(打包压缩)
-define('STATIC_PATH',"./static/");//静态文件目录
-//define('STATIC_PATH','http://static.kalcaddle.com/static/');//静态文件统分离,可单独将static部署到CDN
+define('SDK_DIR',		LIB_DIR .'sdks/');			//
+define('DEFAULT_PERRMISSIONS',0755);	//新建文件、解压文件默认权限，777 部分虚拟主机限制了777
 
 /*
- 可以自定义【用户目录】和【公共目录】;移到web目录之外，
- 可以使程序更安全, 就不用限制用户的扩展名权限了;
+ * 可以数据目录;移到web目录之外，可以使程序更安全, 就不用限制用户的扩展名权限了;
+ * 1. 需要先将data文件夹移到别的地方 例如将data文件夹拷贝到D:/
+ * 2. 在config文件夹下新建define.php 新增一行 <?php define('DATA_PATH','D:/data/');
  */
+
+if(file_exists(BASIC_PATH.'config/define.php')){
+	include(BASIC_PATH.'config/define.php');
+}
+if(!defined('DATA_PATH')){
+	define('DATA_PATH',BASIC_PATH .'data/');       //用户数据目录
+}
 define('USER_PATH',     DATA_PATH .'User/');        //用户目录
-//自定义用户目录；需要先将data/User移到别的地方 再修改配置，例如：
-//define('USER_PATH',   DATA_PATH .'/Library/WebServer/Documents/User');
-define('PUBLIC_PATH',   DATA_PATH .'public/');     //公共目录
-//公共共享目录,读写权限跟随用户目录的读写权限 再修改配置，例如：
-//define('PUBLIC_PATH','/Library/WebServer/Documents/Public/');
-
-/*
- * office服务器配置；默认调用的微软的接口，程序需要部署到外网。
- * 本地部署weboffice 引号内填写office解析服务器地址 形如:  http://---/view.aspx?src=
- */
-define('OFFICE_SERVER',"https://view.officeapps.live.com/op/view.aspx?src=");
-
+define('GROUP_PATH',    DATA_PATH .'Group/');       //群组目录
+define('USER_SYSTEM',   DATA_PATH .'system/');      //用户数据存储目录
+define('TEMP_PATH',     DATA_PATH .'temp/');        //临时目录
+define('LOG_PATH',      TEMP_PATH .'log/');         //日志
+define('DATA_THUMB',    TEMP_PATH .'thumb/');       //缩略图生成存放
+define('LANGUAGE_PATH', BASIC_PATH .'config/i18n/');//多语言目录
+define('SESSION_ID','KOD_SESSION_ID_'.substr(md5(BASIC_PATH),0,5));
+define('KOD_SESSION',   DATA_PATH .'session/');     //session目录
+include(FUNCTION_DIR.'common.function.php');
 include(FUNCTION_DIR.'web.function.php');
 include(FUNCTION_DIR.'file.function.php');
-include(CLASS_DIR.'fileCache.class.php');
+include(FUNCTION_DIR.'helper.function.php');
+
+$config['appStartTime'] = mtime();
+$config['appCharset']	= 'utf-8';//该程序整体统一编码
+$config['checkCharset'] = 'ASCII,UTF-8,GB2312,GBK,BIG5,UTF-16,UCS-2,'.
+		'Unicode,EUC-KR,EUC-JP,SHIFT-JIS,EUCJP-WIN,SJIS-WIN,JIS,LATIN1';//文件打开自动检测编码
+$config['checkCharsetDefault'] = '';//if set,not check;
+
+if(!defined('HOST')){
+	define('HOST',get_host().'/');
+}
+define('WEB_ROOT',get_webroot(BASIC_PATH));
+define('APP_HOST',HOST.str_replace(WEB_ROOT,'',BASIC_PATH));			//程序根目录
+define('PLUGIN_HOST',APP_HOST.str_replace(BASIC_PATH,'',PLUGIN_DIR));	//插件目录
+
 include(CONTROLLER_DIR.'util.php');
-include(CORER_DIR.'Application.class.php');
-include(CORER_DIR.'Controller.class.php');
-include(CORER_DIR.'Model.class.php');
-include(FUNCTION_DIR.'common.function.php');
 include(BASIC_PATH.'config/setting.php');
 include(BASIC_PATH.'config/version.php');
 
-//数据地址定义。
-$config['pic_thumb']	= BASIC_PATH.'data/thumb/';		// 缩略图生成存放地址
-$config['cache_dir']	= BASIC_PATH.'data/cache/';		// 缓存文件地址
-$config['app_startTime'] = mtime();         			//起始时间
-
-//系统编码配置
-$config['app_charset']	 ='utf-8';			//该程序整体统一编码
-$config['check_charset'] = 'ASCII,UTF-8,GBK';//文件打开自动检测编码
 //when edit a file ;check charset and auto converto utf-8;
 if (strtoupper(substr(PHP_OS, 0,3)) === 'WIN') {
-	$config['system_os']='windows';
-	$config['system_charset']='gbk';//user set your server system charset
+	$config['systemOS']='windows';
+	$config['systemCharset']='gbk';// EUC-JP/Shift-JIS/BIG5  //user set your server system charset
+	if(version_compare(phpversion(), '7.1.0', '>=')){//7.1 has auto apply the charset
+		$config['systemCharset']='utf-8';
+	}
 } else {
-	$config['system_os']='linux';
-	$config['system_charset']='utf-8';
+	$config['systemOS']='linux';
+	$config['systemCharset']='utf-8';
 }
 
-$in = parse_incoming();
-if(isset($in['PHPSESSID'])){//office edit post
-    session_id($in['PHPSESSID']);
-}
-
-@session_start();
-check_post_many();
-session_write_close();//避免session锁定问题;之后要修改$_SESSION 需要先调用session_start()
+init_common();
 $config['autorun'] = array(
 	array('controller'=>'user','function'=>'loginCheck'),
-    array('controller'=>'user','function'=>'authCheck')
+	array('controller'=>'user','function'=>'authCheck'),
+	array('controller'=>'user','function'=>'bindHook'),
 );

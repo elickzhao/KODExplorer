@@ -1,1 +1,10 @@
-<?php exit;?>{"list_type":"icon","list_sort_field":"mtime","list_sort_order":"down","theme":"simple\/","codetheme":"clouds","wall":"7","musictheme":"mp3player","movietheme":"webplayer"}
+<?php exit;?>{
+    "listType": "icon",
+    "listSortField": "mtime",
+    "listSortOrder": "down",
+    "theme": "win10",
+    "codetheme": "clouds",
+    "wall": "7",
+    "musictheme": "mp3player",
+    "movietheme": "webplayer"
+}
